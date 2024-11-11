@@ -4,7 +4,7 @@
 
 cmake_minimum_required(VERSION 3.28)
 
-project(template-cpp-sdl-lua
+project(cpumaker
     VERSION 0.0.1
     DESCRIPTION "Template for C++/SDL/Lua projects"
     LANGUAGES C CXX ASM
