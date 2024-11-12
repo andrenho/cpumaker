@@ -17,9 +17,9 @@ UI::UI()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
     TTF_Init();
-    IMG_Init(IMG_INIT_PNG);
+    IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 
-    window_ = SDL_CreateWindow(PROJECT_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_RESIZABLE);
+    window_ = SDL_CreateWindow(PROJECT_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 800, SDL_WINDOW_RESIZABLE);
     if (!window_)
         throw std::runtime_error("Error: SDL_CreateWindow(): "s + SDL_GetError());
 
@@ -33,15 +33,18 @@ UI::UI()
 
     load_resources();
     init_imgui();
-    load_resources();
 }
 
 void UI::load_resources()
 {
-    std::vector<uint8_t> face = b::embed<"resources/images/face.png">().vec();
-    SDL_Surface* sf = IMG_Load_RW(SDL_RWFromMem(face.data(), (int) face.size()), 1);
-    texture_ = SDL_CreateTextureFromSurface(ren_, sf);
-    SDL_FreeSurface(sf);
+    auto load_image = [this](b::EmbedInternal::EmbeddedFile const& file) -> SDL_Texture* {
+        SDL_Surface* sf = IMG_Load_RW(SDL_RWFromMem((void *) file.data(), (int) file.size()), 1);
+        SDL_Texture* tx = SDL_CreateTextureFromSurface(ren_, sf);
+        SDL_FreeSurface(sf);
+        return tx;
+    };
+
+    bg_texture_ = load_image(b::embed<"resources/images/bg.jpg">());
 }
 
 
@@ -68,8 +71,8 @@ UI::~UI()
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
 
-    if (texture_)
-        SDL_DestroyTexture(texture_);
+    if (bg_texture_)
+        SDL_DestroyTexture(bg_texture_);
     if (ren_)
         SDL_DestroyRenderer(ren_);
     if (window_)
@@ -118,15 +121,7 @@ void UI::render_game()
     SDL_GetWindowSize(window_, &scr_w, &scr_h);
 
     // draw face texture
-    int tx_w, tx_h;
-    SDL_QueryTexture(texture_, nullptr, nullptr, &tx_w, &tx_h);
-    SDL_Rect dest = {
-        .x = (scr_w / 2) - (tx_w / 2),
-        .y = (scr_h / 2) - (tx_h / 2),
-        .w = tx_w,
-        .h = tx_h,
-    };
-    SDL_RenderCopy(ren_, texture_, nullptr, &dest);
+    SDL_RenderCopy(ren_, bg_texture_, nullptr, nullptr);
 }
 
 

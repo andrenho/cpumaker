@@ -11,10 +11,12 @@ LuaEngine::LuaEngine()
 
     lua_pushstring(L, "main");
 
+    /*
     auto script = b::embed<"resources/scripts/hello.lua">();
     if (luaL_loadbuffer(L, script.str().c_str(), script.length(), PROJECT_NAME) != LUA_OK)
         throw std::runtime_error("Error loading Lua script.");
     lua_call(L, 0, 1);
+    */
 
     lua_settable(L, LUA_REGISTRYINDEX);
 }

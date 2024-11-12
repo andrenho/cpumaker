@@ -6,9 +6,6 @@
 
 int main()
 {
-    LuaEngine lua_engine;
-    lua_engine.hello();
-
     UI ui;
     auto last_frame = hr::now();
     while (ui.running()) {
