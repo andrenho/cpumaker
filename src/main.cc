@@ -2,11 +2,14 @@
 
 #include <chrono>
 
+#include "game/game.hh"
 #include "lua/luaengine.hh"
 
 int main()
 {
-    UI ui;
+    Game game;
+
+    UI ui(game);
     auto last_frame = hr::now();
     while (ui.running()) {
         auto new_frame = hr::now();

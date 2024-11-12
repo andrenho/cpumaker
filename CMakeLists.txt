@@ -61,11 +61,14 @@ pkg_search_module(LUA REQUIRED luajit)
 set_source_files_properties(${IMGUI_SRC} PROPERTIES COMPILE_FLAGS "-w")
 
 add_executable(${CMAKE_PROJECT_NAME}
-    src/main.cc
-    src/ui/ui.hh
-    src/ui/ui.cc
-    src/lua/luaengine.cc
-    src/lua/luaengine.hh
+        src/main.cc
+        src/ui/ui.hh
+        src/ui/ui.cc
+        src/lua/luaengine.cc
+        src/lua/luaengine.hh
+        src/game/game.hh
+        src/game/game.hh
+        src/game/board.hh
 )
 
 b_embed(${CMAKE_PROJECT_NAME} resources/fonts/04B_03__.TTF)
