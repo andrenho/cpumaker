@@ -1,7 +1,7 @@
 # Phase 1 - simple circuits
 
 Board creation
-- [ ] Show board
+- [ ] Draw board
 - [ ] Move board around
 - [ ] Add items to board
 - [ ] Delete items from board

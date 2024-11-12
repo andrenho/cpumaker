@@ -29,19 +29,17 @@ UI::UI(Game& game)
     SDL_Log("Current SDL_Renderer: %s", info.name);
 
     load_resources();
+    board_ui_.load_resources(ren_);
+
+    board_ui_.set_board(&game.board());
 }
 
 void UI::load_resources()
 {
-    auto load_image = [this](b::EmbedInternal::EmbeddedFile const& file) -> SDL_Texture* {
-        SDL_Surface* sf = IMG_Load_RW(SDL_RWFromMem((void *) file.data(), (int) file.size()), 1);
-        SDL_Texture* tx = SDL_CreateTextureFromSurface(ren_, sf);
-        SDL_FreeSurface(sf);
-        return tx;
-    };
-
-    bg_texture_ = load_image(b::embed<"resources/images/bg.jpg">());
-    img_texture_ = load_image(b::embed<"resources/images/circuit.png">());
+    auto bg = b::embed<"resources/images/bg.jpg">();
+    SDL_Surface* sf = IMG_Load_RW(SDL_RWFromMem((void *) bg.data(), (int) bg.size()), 1);
+    bg_texture_ = SDL_CreateTextureFromSurface(ren_, sf);
+    SDL_FreeSurface(sf);
 
     auto font_file = b::embed<"resources/fonts/04B_03__.TTF">();
     font_ = TTF_OpenFontRW(SDL_RWFromMem((void *) font_file.data(), (int) font_file.size()), 1, 16);
@@ -71,32 +69,18 @@ void UI::update(Duration timestep)
                 break;
             default: break;
         }
+
+        board_ui_.update(&e);  // TODO - check where the event is happening
     }
 }
 
 void UI::render()
 {
     // clear screen
-    SDL_SetRenderDrawColor(ren_, 0, 0, 0, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(ren_);
+    SDL_RenderCopy(ren_, bg_texture_, nullptr, nullptr);
 
-    render_game();
-    render_gui();
+    board_ui_.draw(ren_);
 
     SDL_RenderPresent(ren_);
 }
 
-void UI::render_game()
-{
-    // get window size
-    int scr_w, scr_h;
-    SDL_GetWindowSize(window_, &scr_w, &scr_h);
-
-    // draw face texture
-    SDL_RenderCopy(ren_, bg_texture_, nullptr, nullptr);
-}
-
-
-void UI::render_gui()
-{
-}

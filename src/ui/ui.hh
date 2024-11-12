@@ -3,6 +3,7 @@
 
 #include <chrono>
 
+#include "boardui.hh"
 #include "game/game.hh"
 
 using hr = std::chrono::high_resolution_clock;
@@ -22,13 +23,13 @@ public:
 
 private:
     void load_resources();
-    void render_game();
-    void render_gui();
 
     bool running_ = true;
     bool show_demo_window_ = true;
 
     Game&                game_;
+    BoardUI              board_ui_;
+
     struct SDL_Window*   window_;
     struct SDL_Renderer* ren_;
     struct SDL_Texture*  bg_texture_ = nullptr;
