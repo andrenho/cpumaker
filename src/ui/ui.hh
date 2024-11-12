@@ -20,7 +20,6 @@ public:
 
 private:
     void load_resources();
-    void init_imgui();
     void render_game();
     void render_gui();
 
@@ -29,8 +28,9 @@ private:
 
     struct SDL_Window*   window_;
     struct SDL_Renderer* ren_;
-    struct SDL_Texture*  bg_texture_;
-    struct ImGuiIO* io;
+    struct SDL_Texture*  bg_texture_ = nullptr;
+    struct SDL_Texture*  img_texture_ = nullptr;
+    struct _TTF_Font*     font_ = nullptr;
 };
 
 #endif
