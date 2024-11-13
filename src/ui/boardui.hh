@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include "game/board.hh"
 
+enum Icon: uint16_t;
+
 class BoardUI {
 public:
     void load_resources(SDL_Renderer* ren);
@@ -18,9 +20,16 @@ private:
     int board_x = 20;
     int board_y = 20;
 
+    void draw_board_borders(SDL_Renderer* ren) const;
     void draw_tile(SDL_Renderer* ren, int x, int y) const;
+    void draw_icon(SDL_Renderer* ren, Icon icon, int x, int y) const;
 
     float zoom_ = 3.f;
+
+    //
+    // icon definition
+    //
+
 };
 
 #endif //BOARDUI_HH
