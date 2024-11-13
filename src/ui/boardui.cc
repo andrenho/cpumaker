@@ -60,12 +60,12 @@ void BoardUI::draw_board_borders(SDL_Renderer* ren) const
     draw_icon(ren, I_BOARD_BR, board_->w(), board_->h());
 
     for (size_t x = 0; x < board_->w(); ++x) {
-        draw_icon(ren, I_BOARD_T, x, -1);
+        draw_icon(ren, I_BOARD_T, x, -2);
         draw_icon(ren, I_BOARD_B, x, board_->h());
     }
 
     for (size_t y = 0; y < board_->h(); ++y) {
-        draw_icon(ren, I_BOARD_L, -1, y);
+        draw_icon(ren, I_BOARD_L, -2, y);
         draw_icon(ren, I_BOARD_R, board_->w(), y);
     }
 }

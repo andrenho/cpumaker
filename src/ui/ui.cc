@@ -67,6 +67,10 @@ void UI::update(Duration timestep)
             case SDL_QUIT:
                 running_ = false;
                 break;
+            case SDL_KEYDOWN:
+                if (e.key.keysym.sym == SDLK_q)
+                    running_ = false;
+                break;
             default: break;
         }
 
