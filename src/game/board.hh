@@ -5,11 +5,11 @@ class Board {
 public:
     Board() : w_(10), h_(10) {}
 
-    [[nodiscard]] size_t w() const { return w_; }
-    [[nodiscard]] size_t h() const { return h_; }
+    [[nodiscard]] ssize_t w() const { return w_; }
+    [[nodiscard]] ssize_t h() const { return h_; }
 
 private:
-    size_t w_, h_;
+    ssize_t w_, h_;
 };
 
 #endif //BOARD_HH

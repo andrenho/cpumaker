@@ -32,9 +32,28 @@ void BoardUI::load_resources(SDL_Renderer* ren)
     SDL_FreeSurface(sf);
 }
 
-bool BoardUI::update(SDL_Event* e)
+void BoardUI::event(SDL_Window* window, SDL_Event* e)
 {
-    return false;
+    switch (e->type) {
+        case SDL_MOUSEBUTTONDOWN:
+        case SDL_MOUSEBUTTONUP:
+            if (e->button.button == SDL_BUTTON_RIGHT) {
+                moving_ = (e->button.state == SDL_PRESSED);
+                SDL_ShowCursor(moving_ ? SDL_DISABLE : SDL_ENABLE);
+            }
+            break;
+
+        case SDL_MOUSEMOTION:
+            if (moving_) {
+                int scr_w, scr_h;
+                SDL_GetWindowSize(window, &scr_w, &scr_h);
+                rel_x_ += (e->motion.xrel / zoom_);
+                rel_y_ += (e->motion.yrel / zoom_);
+                rel_x_ = std::max(std::min(rel_x_, (int) (scr_w / zoom_ - 20)), (int) -(board_->w() * TILE_SIZE) + 20);
+                rel_y_ = std::max(std::min(rel_y_, (int) (scr_h / zoom_ - 20)), (int) -(board_->h() * TILE_SIZE) + 20);
+            }
+            break;
+    }
 }
 
 void BoardUI::draw(SDL_Renderer* ren) const
@@ -43,8 +62,8 @@ void BoardUI::draw(SDL_Renderer* ren) const
 
     draw_board_borders(ren);
 
-    for (size_t x = 0; x < board_->w(); ++x) {
-        for (size_t y = 0; y < board_->h(); ++y) {
+    for (ssize_t x = 0; x < board_->w(); ++x) {
+        for (ssize_t y = 0; y < board_->h(); ++y) {
             draw_tile(ren, x, y);
         }
     }
@@ -59,26 +78,26 @@ void BoardUI::draw_board_borders(SDL_Renderer* ren) const
     draw_icon(ren, I_BOARD_BL, -2, board_->h());
     draw_icon(ren, I_BOARD_BR, board_->w(), board_->h());
 
-    for (size_t x = 0; x < board_->w(); ++x) {
+    for (ssize_t x = 0; x < board_->w(); ++x) {
         draw_icon(ren, I_BOARD_T, x, -2);
         draw_icon(ren, I_BOARD_B, x, board_->h());
     }
 
-    for (size_t y = 0; y < board_->h(); ++y) {
+    for (ssize_t y = 0; y < board_->h(); ++y) {
         draw_icon(ren, I_BOARD_L, -2, y);
         draw_icon(ren, I_BOARD_R, board_->w(), y);
     }
 }
 
-void BoardUI::draw_tile(SDL_Renderer* ren, int x, int y) const
+void BoardUI::draw_tile(SDL_Renderer* ren, ssize_t x, ssize_t y) const
 {
     draw_icon(ren, I_TILE, x, y);
 }
 
-void BoardUI::draw_icon(SDL_Renderer* ren, Icon icon, int x, int y) const
+void BoardUI::draw_icon(SDL_Renderer* ren, Icon icon, ssize_t x, ssize_t y) const
 {
     Rect const& r = rect[icon];
     SDL_Rect src { .x = r.x * TILE_SIZE, .y = r.y * TILE_SIZE, .w = r.w * TILE_SIZE, .h = r.h * TILE_SIZE };
-    SDL_Rect dest = { .x = board_x + (x * TILE_SIZE), .y = board_y + (y * TILE_SIZE), .w = src.w, .h = src.h };
+    SDL_Rect dest = { .x = (int) (rel_x_ + (x * TILE_SIZE)), .y = (int) (rel_y_ + (y * TILE_SIZE)), .w = src.w, .h = src.h };
     SDL_RenderCopy(ren, icons_, &src, &dest);
 }

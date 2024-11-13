@@ -70,11 +70,15 @@ void UI::update(Duration timestep)
             case SDL_KEYDOWN:
                 if (e.key.keysym.sym == SDLK_q)
                     running_ = false;
+                board_ui_.event(window_, &e);
+                break;
+            case SDL_MOUSEMOTION:
+            case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEBUTTONUP:
+                board_ui_.event(window_, &e);
                 break;
             default: break;
         }
-
-        board_ui_.update(&e);  // TODO - check where the event is happening
     }
 }
 

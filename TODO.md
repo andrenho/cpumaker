@@ -2,7 +2,7 @@
 
 Board creation
 - [x] Draw board
-- [ ] Move board around
+- [x] Move board around
 - [ ] Add items to board
 - [ ] Delete items from board
 - [ ] Add/remove wires
