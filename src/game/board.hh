@@ -3,8 +3,11 @@
 
 #include <map>
 #include <variant>
+#include <sys/types.h>
 
-#include "component.hh"
+#include "Element.hh"
+
+using Layout = std::map<std::pair<ssize_t, ssize_t>, Component>;
 
 class Board {
 public:
@@ -13,7 +16,9 @@ public:
     [[nodiscard]] ssize_t w() const { return w_; }
     [[nodiscard]] ssize_t h() const { return h_; }
 
-    std::map<std::pair<ssize_t, ssize_t>, std::variant<Component>> components {};
+    Layout components {};
+
+    void paste(Board const& shadow, ssize_t x, ssize_t y, bool clear_empty_squares);
 
 private:
     ssize_t w_, h_;

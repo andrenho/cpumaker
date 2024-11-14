@@ -30,6 +30,7 @@ private:
 
     float zoom_ = 2.f;
     bool  moving_ = false;
+    Board shadow_board_;   // used for pasting or temporary operations
 };
 
 #endif //BOARDUI_HH

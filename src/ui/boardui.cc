@@ -70,16 +70,16 @@ void BoardUI::event(SDL_Window* window, SDL_Event* e)
                 auto [tx, ty] = *tile;
                 switch (e->key.keysym.sym) {
                     case SDLK_n:
-                        board_->components[{ tx, ty }] = Component { Component::NPN };
+                        board_->components[{ tx, ty }] = Element { Element::NPN };
                         break;
                     case SDLK_p:
-                        board_->components[{ tx, ty }] = Component { Component::PNP };
+                        board_->components[{ tx, ty }] = Element { Element::PNP };
                         break;
                     case SDLK_b:
-                        board_->components[{ tx, ty }] = Component { Component::BUTTON };
+                        board_->components[{ tx, ty }] = Element { Element::BUTTON };
                         break;
                     case SDLK_l:
-                        board_->components[{ tx, ty }] = Component { Component::LED };
+                        board_->components[{ tx, ty }] = Element { Element::LED };
                         break;
                     default: break;
                 }
@@ -131,21 +131,21 @@ void BoardUI::draw_tile(SDL_Renderer* ren, ssize_t x, ssize_t y) const
     auto it = board_->components.find({ x, y });
     if (it != board_->components.end()) {
         auto const& item = it->second;
-        if (auto* component = std::get_if<Component>(&item); component) {
+        if (auto* component = std::get_if<Element>(&item); component) {
             switch (component->type) {
-                case Component::NPN:
+                case Element::NPN:
                     draw_icon(ren, I_SHADOW_RECT, x, y);
                     draw_icon(ren, I_NPN, x, y);
                     break;
-                case Component::PNP:
+                case Element::PNP:
                     draw_icon(ren, I_SHADOW_RECT, x, y);
                     draw_icon(ren, I_PNP, x, y);
                     break;
-                case Component::BUTTON:
+                case Element::BUTTON:
                     draw_icon(ren, I_SHADOW_SQUARE, x, y);
                     draw_icon(ren, component->value ? I_BUTTON_ON : I_BUTTON_OFF, x, y);
                     break;
-                case Component::LED:
+                case Element::LED:
                     draw_icon(ren, I_SHADOW_CIRCLE, x, y);
                     draw_icon(ren, component->value ? I_LED_ON : I_LED_OFF, x, y);
                     break;
