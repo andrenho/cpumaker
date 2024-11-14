@@ -38,7 +38,6 @@ void BoardUI::load_resources(SDL_Renderer* ren)
 {
     auto bg = b::embed<"resources/images/circuit.png">();
     SDL_Surface* sf = IMG_Load_RW(SDL_RWFromMem((void *) bg.data(), (int) bg.size()), 1);
-    // TODO - set color key
     icons_ = SDL_CreateTextureFromSurface(ren, sf);
     SDL_FreeSurface(sf);
 }
