@@ -5,7 +5,7 @@
 #include <variant>
 #include <sys/types.h>
 
-#include "Element.hh"
+#include "element.hh"
 
 using Layout = std::map<std::pair<ssize_t, ssize_t>, Component>;
 
