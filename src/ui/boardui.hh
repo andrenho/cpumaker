@@ -1,6 +1,8 @@
 #ifndef BOARDUI_HH
 #define BOARDUI_HH
 
+#include <optional>
+
 #include <SDL2/SDL.h>
 #include "game/board.hh"
 
@@ -23,6 +25,8 @@ private:
     void draw_board_borders(SDL_Renderer* ren) const;
     void draw_tile(SDL_Renderer* ren, ssize_t x, ssize_t y) const;
     void draw_icon(SDL_Renderer* ren, Icon icon, ssize_t x, ssize_t y) const;
+
+    [[nodiscard]] std::optional<std::pair<ssize_t, ssize_t>> mouse_tile() const;
 
     float zoom_ = 2.f;
     bool  moving_ = false;

@@ -4,6 +4,7 @@ Board creation
 - [x] Draw board
 - [x] Move board around
 - [ ] Add items to board
+- [ ] Interact button
 - [ ] Delete items from board
 - [ ] Add/remove wires
 
@@ -23,6 +24,13 @@ Board creation
 UI
 - [ ] Menu bar
 - [ ] Save/load dialog
+
+# Phase 3 - bus
+
+Board creation
+- [ ] Bus
+- [ ] Adapter
+- [ ] Multi-pins
 
 # Phase 3 - UI
 
