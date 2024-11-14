@@ -72,6 +72,8 @@ add_executable(${CMAKE_PROJECT_NAME}
         src/ui/boardui.hh
         src/game/component.hh
         src/game/board.cc
+        src/game/position.hh
+        src/game/position.hh
 )
 
 b_embed(${CMAKE_PROJECT_NAME} resources/fonts/04B_03__.TTF)

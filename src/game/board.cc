@@ -11,8 +11,8 @@ void Board::paste(Board const& shadow, ssize_t x, ssize_t y, bool clear_empty_sq
     if (clear_empty_squares) {
         ssize_t w = 0, h = 0;
         for (auto const& [pos, _]: shadow.components) {
-            w = std::max(w, pos.first);
-            h = std::max(h, pos.second);
+            w = std::max(w, pos.x);
+            h = std::max(h, pos.y);
         }
         for (ssize_t tx = x; tx < (x + w); ++tx)
             for (ssize_t ty = y; ty < (y + h); ++ty)
