@@ -30,7 +30,7 @@ set_property(GLOBAL PROPERTY LINK_WHAT_YOU_USE TRUE)
 
 # warnings
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(warnings -Wall -Wextra -Wformat-nonliteral -Wundef -Wshadow -Wwrite-strings -Wfloat-equal -Wswitch-default -Wmissing-format-attribute -Wswitch-enum -Wmissing-noreturn -Wno-unused-parameter -Wno-unused)
+    set(warnings -Wall -Wextra -Wformat-nonliteral -Wundef -Wshadow -Wwrite-strings -Wfloat-equal -Wmissing-format-attribute -Wswitch-enum -Wmissing-noreturn -Wno-unused-parameter -Wno-unused)
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         set(warnings ${warnings} -Wsuggest-attribute=pure -Wsuggest-attribute=const -Wsuggest-attribute=noreturn -Wsuggest-attribute=malloc -Wsuggest-attribute=returns_nonnull -Wsuggest-attribute=format -Wsuggest-attribute=cold)
     endif()
@@ -67,12 +67,10 @@ add_executable(${CMAKE_PROJECT_NAME}
         src/lua/luaengine.cc
         src/lua/luaengine.hh
         src/game/game.hh
-        src/game/game.hh
         src/game/board.hh
         src/ui/boardui.cc
         src/ui/boardui.hh
-        src/game/Element.hh
-        src/game/Element.hh
+        src/game/component.hh
         src/game/board.cc
 )
 

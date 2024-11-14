@@ -4,7 +4,9 @@ Board creation
 - [x] Draw board
 - [x] Move board around
 - [ ] Add items to board
-- [ ] Interact button
+  - [ ] Add components
+  - [ ] Add wires
+- [ ] Interact with button
 - [ ] Delete items from board
 - [ ] Add/remove wires
 
