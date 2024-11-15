@@ -26,11 +26,11 @@ private:
     void draw_tile(SDL_Renderer* ren, ssize_t x, ssize_t y) const;
     void draw_icon(SDL_Renderer* ren, Icon icon, ssize_t x, ssize_t y) const;
 
-    [[nodiscard]] std::optional<std::pair<ssize_t, ssize_t>> mouse_tile() const;
+    [[nodiscard]] std::optional<SubPosition> mouse_tile() const;
 
     float zoom_ = 2.f;
     bool  moving_ = false;
-    Board shadow_board_;   // used for pasting or temporary operations
+    std::optional<std::pair<Position, WireType>> drawing_wire_;
 };
 
 #endif //BOARDUI_HH

@@ -67,19 +67,22 @@ void BoardUI::event(SDL_Window* window, SDL_Event* e)
         case SDL_KEYDOWN: {
             auto tile = mouse_tile();
             if (tile) {
-                auto [tx, ty] = *tile;
+                auto [pos, dir] = *tile;
                 switch (e->key.keysym.sym) {
                     case SDLK_n:
-                        board_->components[{ tx, ty }] = Element { Element::NPN };
+                        board_->components[pos] = Element { Element::NPN };
                         break;
                     case SDLK_p:
-                        board_->components[{ tx, ty }] = Element { Element::PNP };
+                        board_->components[pos] = Element { Element::PNP };
                         break;
                     case SDLK_b:
-                        board_->components[{ tx, ty }] = Element { Element::BUTTON };
+                        board_->components[pos] = Element { Element::BUTTON };
                         break;
                     case SDLK_l:
-                        board_->components[{ tx, ty }] = Element { Element::LED };
+                        board_->components[pos] = Element { Element::LED };
+                        break;
+                    case SDLK_1:
+                        drawing_wire_ = { pos, WireType::W1 };
                         break;
                     default: break;
                 }
@@ -162,16 +165,19 @@ void BoardUI::draw_icon(SDL_Renderer* ren, Icon icon, ssize_t x, ssize_t y) cons
     SDL_RenderCopy(ren, icons_, &src, &dest);
 }
 
-std::optional<std::pair<ssize_t, ssize_t>> BoardUI::mouse_tile() const
+std::optional<SubPosition> BoardUI::mouse_tile() const
 {
     int x, y;
     SDL_GetMouseState(&x, &y);
 
-    ssize_t tx = ((x / zoom_) - rel_x_) / TILE_SIZE;
-    ssize_t ty = ((y / zoom_) - rel_y_) / TILE_SIZE;
+    float tx = (((float) x / zoom_) - (float) rel_x_) / (float) TILE_SIZE;
+    float ty = (((float) y / zoom_) - (float) rel_y_) / (float) TILE_SIZE;
 
-    if (tx >= 0 && ty >= 0 && tx < board_->w() && ty < board_->h())
-        return std::make_pair(tx, ty);
+    // TODO - direction ?
+
+    if (tx >= 0 && ty >= 0 && tx < board_->w() && ty < board_->h()) {
+        return SubPosition { { (ssize_t) tx, (ssize_t) ty }, Direction::N };
+    }
 
     return {};
 }
