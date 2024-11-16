@@ -10,11 +10,13 @@ enum class BoardSpriteSheet::Sprite {
     BoardTopLeft, BoardTop, BoardTopRight, BoardLeft, BoardRight, BoardBottomLeft, BoardBottom, BoardBottomRight,
     NPN, PNP, ButtonOff, ButtonOn, LedOff, LedOn,
     ShadowRect, ShadowSquare, ShadowCircle,
+    WireTopOnNorth_1, WireTopOnEast_1, WireTopOnWest_1, WireTopOnSouth_1,
+    WireTopOffNorth_1, WireTopOffEast_1, WireTopOffWest_1, WireTopOffSouth_1,
 };
 
 static constexpr BoardSpriteSheet::Coordinate coordinates[] = {
-    { 2, 2 },       // I_TILE
-    { 0, 0, 2, 2 }, // I_BOARD_*
+    { 2, 2 },       // Tile
+    { 0, 0, 2, 2 }, // Board*
     { 2, 0, 1, 2 },
     { 3, 0, 2, 2 },
     { 0, 2, 2, 1 },
@@ -22,15 +24,17 @@ static constexpr BoardSpriteSheet::Coordinate coordinates[] = {
     { 0, 3, 2, 2 },
     { 2, 3, 1, 2 },
     { 3, 3, 2, 2 },
-    { 5, 2 },       // I_NPN
+    { 5, 2 },       // NPN
     { 5, 3 },
     { 6, 2 },
     { 6, 3 },
     { 7, 2 },
     { 7, 3 },
-    { 5, 4 },       // I_SHADOW_*
+    { 5, 4 },       // Shadow*
     { 6, 4 },
     { 7, 4 },
+    { 0, 7 }, { 1, 7 }, { 2, 7 }, { 3, 7 },  // WireTopOn*
+    { 0, 5 }, { 1, 5 }, { 2, 5 }, { 3, 5 },  // WireTopOff*
 };
 
 void BoardSpriteSheet::load(SDL_Renderer* ren)
