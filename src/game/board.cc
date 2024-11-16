@@ -39,8 +39,30 @@ std::vector<SubPosition> Board::wire_from_a_to_b(Position const& start, Position
             sp.push_back({ .pos = { x, start.y }, .dir = Direction::E });
         }
         sp.push_back({ .pos = { end.x, start.y }, .dir = Direction::W });
+    } else if (end.x < start.x) {
+        sp.push_back({ .pos = start, .dir = Direction::W });
+        for (ssize_t x = start.x - 1; x > end.x; --x) {
+            sp.push_back({ .pos = { x, start.y }, .dir = Direction::E });
+            sp.push_back({ .pos = { x, start.y }, .dir = Direction::W });
+        }
+        sp.push_back({ .pos = { end.x, start.y }, .dir = Direction::E });
     }
 
+    if (end.y > start.y) {
+        sp.push_back({ .pos = { end.x, start.y }, .dir = Direction::S });
+        for (ssize_t y = start.y + 1; y < end.y; ++y) {
+            sp.push_back({ .pos = { end.x, y }, .dir = Direction::N });
+            sp.push_back({ .pos = { end.x, y }, .dir = Direction::S });
+        }
+        sp.push_back({ .pos = end, .dir = Direction::N });
+    } else if (end.y < start.y) {
+        sp.push_back({ .pos = { end.x, start.y }, .dir = Direction::N });
+        for (ssize_t y = start.y - 1; y > end.y; --y) {
+            sp.push_back({ .pos = { end.x, y }, .dir = Direction::S });
+            sp.push_back({ .pos = { end.x, y }, .dir = Direction::N });
+        }
+        sp.push_back({ .pos = end, .dir = Direction::S });
+    }
 
     // TODO
     return sp;
