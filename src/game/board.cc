@@ -27,3 +27,21 @@ void Board::paste(Board const& shadow, ssize_t x, ssize_t y, bool clear_empty_sq
         }
     }
 }
+
+std::vector<SubPosition> Board::wire_from_a_to_b(Position const& start, Position const& end)
+{
+    std::vector<SubPosition> sp;
+
+    if (end.x > start.x) {
+        sp.push_back({ .pos = start, .dir = Direction::E });
+        for (ssize_t x = start.x + 1; x < end.x; ++x) {
+            sp.push_back({ .pos = { x, start.y }, .dir = Direction::W });
+            sp.push_back({ .pos = { x, start.y }, .dir = Direction::E });
+        }
+        sp.push_back({ .pos = { end.x, start.y }, .dir = Direction::W });
+    }
+
+
+    // TODO
+    return sp;
+}

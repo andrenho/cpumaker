@@ -3,16 +3,11 @@
 
 #include <unordered_map>
 #include <variant>
+#include <vector>
 #include <sys/types.h>
 
 #include "component.hh"
 #include "position.hh"
-
-enum class WireType { None, W1 };
-struct Wire {
-    WireType upper = WireType::None;
-    WireType lower = WireType::None;
-};
 
 class Board {
 public:
@@ -22,9 +17,10 @@ public:
     [[nodiscard]] ssize_t h() const { return h_; }
 
     std::unordered_map<Position, Component> components {};
-    std::unordered_map<SubPosition, Wire>   wires {};
 
     void paste(Board const& shadow, ssize_t x, ssize_t y, bool clear_empty_squares);
+
+    static std::vector<SubPosition> wire_from_a_to_b(Position const& start, Position const& end);
 
 private:
     ssize_t w_, h_;

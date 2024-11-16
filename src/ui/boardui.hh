@@ -25,14 +25,21 @@ private:
 
     void draw_board_borders(SDL_Renderer* ren) const;
     void draw_tile(SDL_Renderer* ren, ssize_t x, ssize_t y) const;
-    void draw_icon(SDL_Renderer* ren, BoardSpriteSheet::Sprite icon, ssize_t x, ssize_t y) const;
-    void draw_temporary_wire(SDL_Renderer* ren, Position const& start, Position const& end, WireType wire_type) const;
+    void draw_icon(SDL_Renderer* ren, BoardSpriteSheet::Sprite icon, ssize_t x, ssize_t y, bool semitransparent=false) const;
 
     [[nodiscard]] std::optional<SubPosition> mouse_tile() const;
 
     float zoom_ = 2.f;
     bool  moving_ = false;
-    std::optional<std::pair<Position, WireType>> drawing_wire_;
+
+    struct TempWire {
+        Position  start_pos;
+        WireWidth width;
+        WireSide  side;
+    };
+    std::optional<TempWire> drawing_wire_;
+
+    void draw_temporary_wire(SDL_Renderer* ren, TempWire const& temp_wire, Position const& end) const;
 };
 
 #endif //BOARDUI_HH

@@ -6,6 +6,9 @@ Board creation
 - [ ] Add items to board
   - [x] Add components
   - [ ] Add wires
+    - [ ] Temporary wires
+    - [ ] Add wires
+    - [ ] Lower wires
 - [ ] Interact with button
 - [ ] Delete items from board
 - [ ] Add/remove wires

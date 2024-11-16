@@ -1,6 +1,6 @@
 #include "boardsprites.hh"
-#include "boardsprites.hh"
 
+#include <unordered_map>
 #include <SDL_image.h>
 
 #include "battery/embed.hpp"
@@ -42,6 +42,7 @@ void BoardSpriteSheet::load(SDL_Renderer* ren)
     auto bg = b::embed<"resources/images/circuit.png">();
     SDL_Surface* sf = IMG_Load_RW(SDL_RWFromMem((void *) bg.data(), (int) bg.size()), 1);
     texture_ = SDL_CreateTextureFromSurface(ren, sf);
+    SDL_SetTextureBlendMode(texture_, SDL_BLENDMODE_BLEND);
     SDL_FreeSurface(sf);
 }
 
@@ -50,10 +51,10 @@ BoardSpriteSheet::Coordinate const& BoardSpriteSheet::coordinate(Sprite sprites)
     return coordinates[(size_t) sprites];
 }
 
-BoardSpriteSheet::BoardTile const& BoardSpriteSheet::board_tiles()
+BoardSpriteSheet::BoardSprite const& BoardSpriteSheet::board_sprites()
 {
     using enum Sprite;
-    constexpr static BoardTile board_tile = {
+    constexpr static BoardSprite board_tile = {
         .top_left     = BoardTopLeft,
         .top_right    = BoardTopRight,
         .bottom_left  = BoardBottomLeft,
@@ -67,7 +68,7 @@ BoardSpriteSheet::BoardTile const& BoardSpriteSheet::board_tiles()
     return board_tile;
 }
 
-std::vector<BoardSpriteSheet::Sprite> BoardSpriteSheet::sprite(Component const& component)
+std::vector<BoardSpriteSheet::Sprite> BoardSpriteSheet::component_sprites(Component const& component)
 {
     std::vector<Sprite> sprites;
 
@@ -93,4 +94,32 @@ std::vector<BoardSpriteSheet::Sprite> BoardSpriteSheet::sprite(Component const& 
     }
 
     return sprites;
+}
+
+// hash for wire sprite list
+template <>
+struct std::hash<std::pair<WireConfiguration, bool>> {
+    std::size_t operator()(std::pair<WireConfiguration, bool> const& pair) const noexcept {
+        auto const [wc, value] = pair;
+        return ((((uint8_t) wc.dir) << 16) | (((uint8_t) wc.side) << 8) | (uint8_t) wc.width) << value;
+    }
+};
+
+BoardSpriteSheet::Sprite BoardSpriteSheet::wire_sprite(WireConfiguration const& wire, bool value)
+{
+    static const std::unordered_map<std::pair<WireConfiguration, bool>, Sprite> configs {
+        { { { WireWidth::W1, WireSide::Top, Direction::N }, true }, Sprite::WireTopOnNorth_1 },
+        { { { WireWidth::W1, WireSide::Top, Direction::S }, true }, Sprite::WireTopOnSouth_1 },
+        { { { WireWidth::W1, WireSide::Top, Direction::W }, true }, Sprite::WireTopOnWest_1 },
+        { { { WireWidth::W1, WireSide::Top, Direction::E }, true }, Sprite::WireTopOnEast_1 },
+        { { { WireWidth::W1, WireSide::Top, Direction::N }, false }, Sprite::WireTopOffNorth_1 },
+        { { { WireWidth::W1, WireSide::Top, Direction::S }, false }, Sprite::WireTopOffSouth_1 },
+        { { { WireWidth::W1, WireSide::Top, Direction::W }, false }, Sprite::WireTopOffWest_1 },
+        { { { WireWidth::W1, WireSide::Top, Direction::E }, false }, Sprite::WireTopOffEast_1 },
+    };
+
+    auto it = configs.find({ wire, value });
+    if (it == configs.end())
+        throw std::runtime_error("Wire configuration not found");
+    return it->second;
 }

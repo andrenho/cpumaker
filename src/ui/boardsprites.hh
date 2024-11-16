@@ -17,7 +17,7 @@ public:
 
     enum class Sprite;
 
-    struct BoardTile {
+    struct BoardSprite {
         Sprite top_left, top_right, bottom_left, bottom_right,
                top, bottom, left, right, inner;
     };
@@ -27,8 +27,9 @@ public:
     [[nodiscard]] SDL_Texture* texture() const { return texture_; }
 
     [[nodiscard]] static Coordinate const&   coordinate(Sprite sprite);
-    [[nodiscard]] static BoardTile const&    board_tiles();
-    [[nodiscard]] static std::vector<Sprite> sprite(Component const& component);
+    [[nodiscard]] static BoardSprite const&  board_sprites();
+    [[nodiscard]] static std::vector<Sprite> component_sprites(Component const& component);
+    [[nodiscard]] static Sprite              wire_sprite(WireConfiguration const& wire, bool value);
 
 private:
     SDL_Texture* texture_ = nullptr;

@@ -16,7 +16,7 @@ struct std::hash<Position> {
 
 //---------------------------------------
 
-enum class Direction { N, S, W, E };
+enum class Direction : uint8_t { N, S, W, E };
 
 struct SubPosition {
     Position  pos;
