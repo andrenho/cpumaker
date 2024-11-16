@@ -66,10 +66,17 @@ void BoardUI::event(SDL_Window* window, SDL_Event* e)
                     case SDLK_w:
                         if (drawing_wire_) {
                             auto vsp = Board::route_wire(drawing_wire_->start_pos, tile->pos);
-                            for (auto const& sp: vsp)
-                                ;  // TODO - add wire to board
+                            for (auto const& sp: vsp) {
+                                board_->add_wire(sp.pos, {
+                                    .width = drawing_wire_->width,
+                                    .side = drawing_wire_->side,
+                                    .dir = sp.dir,
+                                });
+                            }
+                            drawing_wire_.reset();
                         }
                         break;
+                    default: break;
                 }
             }
         }
