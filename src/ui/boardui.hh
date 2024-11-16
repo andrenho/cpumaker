@@ -4,27 +4,29 @@
 #include <optional>
 
 #include <SDL2/SDL.h>
-#include "game/board.hh"
 
-enum Icon: uint16_t;
+#include "boardsprites.hh"
+#include "game/board.hh"
 
 class BoardUI {
 public:
     void load_resources(SDL_Renderer* ren);
+
     void event(SDL_Window* window, SDL_Event* e);
     void draw(SDL_Renderer* ren) const;
 
     void set_board(Board* board) { this->board_ = board; }
 
 private:
-    Board* board_ = nullptr;
-    SDL_Texture* icons_ = nullptr;
-    int rel_x_ = 30;
-    int rel_y_ = 30;
+    BoardSpriteSheet spritesheet_;
+    Board*           board_ = nullptr;
+    int              rel_x_ = 30;
+    int              rel_y_ = 30;
 
     void draw_board_borders(SDL_Renderer* ren) const;
     void draw_tile(SDL_Renderer* ren, ssize_t x, ssize_t y) const;
-    void draw_icon(SDL_Renderer* ren, Icon icon, ssize_t x, ssize_t y) const;
+    void draw_icon(SDL_Renderer* ren, BoardSpriteSheet::Sprite icon, ssize_t x, ssize_t y) const;
+    void draw_temporary_wire(SDL_Renderer* ren, Position const& start, Position const& end, WireType wire_type) const;
 
     [[nodiscard]] std::optional<SubPosition> mouse_tile() const;
 

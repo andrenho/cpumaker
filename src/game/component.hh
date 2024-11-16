@@ -2,6 +2,7 @@
 #define COMPONENTS_HH
 
 #include <cstdint>
+#include <variant>
 
 struct Element {
     enum Type { NPN, PNP, BUTTON, LED };
