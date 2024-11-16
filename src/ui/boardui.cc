@@ -150,10 +150,19 @@ void BoardUI::draw_tile(SDL_Renderer* ren, ssize_t x, ssize_t y) const
 {
     draw_icon(ren, BoardSpriteSheet::board_sprites().inner, x, y);
 
-    auto it = board_->components().find({ x, y });
-    if (it != board_->components().end())
-        for (BoardSpriteSheet::Sprite const& sprite: BoardSpriteSheet::component_sprites(it->second))
-            draw_icon(ren, sprite, x, y);
+    {
+        auto it = board_->wires().find({ x, y });
+        if (it != board_->wires().end())
+            for (auto const& wire: it->second)
+                draw_icon(ren, BoardSpriteSheet::wire_sprite(wire), x, y);
+    }
+
+    {
+        auto it = board_->components().find({ x, y });
+        if (it != board_->components().end())
+            for (BoardSpriteSheet::Sprite const& sprite: BoardSpriteSheet::component_sprites(it->second))
+                draw_icon(ren, sprite, x, y);
+    }
 }
 
 void BoardUI::draw_temporary_wire(SDL_Renderer* ren, TempWire const& temp_wire, Position const& end) const

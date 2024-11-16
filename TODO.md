@@ -7,11 +7,13 @@ Board creation
   - [x] Add components
   - [ ] Add wires
     - [x] Temporary wires
-    - [ ] Add wires
+    - [x] Add wires
+    - [ ] Wire drawing side
     - [ ] Lower wires
 - [ ] Interact with button
 - [ ] Delete items from board
 - [ ] Add/remove wires
+- [ ] Wire connection
 
 Simulation
 - [ ] Compilation

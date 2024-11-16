@@ -72,6 +72,7 @@ void UI::update(Duration timestep)
                     running_ = false;
                 board_ui_.event(window_, &e);
                 break;
+            case SDL_KEYUP:
             case SDL_MOUSEMOTION:
             case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP:

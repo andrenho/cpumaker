@@ -21,7 +21,8 @@ public:
     void add_wire(Position const& pos, WireConfiguration const& wire) { wires_[pos].emplace(wire); }
     void paste(Board const& shadow, ssize_t x, ssize_t y, bool clear_empty_squares);
 
-    [[nodiscard]] std::unordered_map<Position, Component> const& components() const { return components_; }
+    [[nodiscard]] std::unordered_map<Position, Component> const&                             components() const { return components_; }
+    [[nodiscard]] std::unordered_map<Position, std::unordered_set<WireConfiguration>> const& wires() const { return wires_; }
 
     static std::vector<SubPosition> route_wire(Position const& start, Position const& end);
 
