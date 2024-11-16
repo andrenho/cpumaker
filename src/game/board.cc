@@ -10,20 +10,20 @@ void Board::paste(Board const& shadow, ssize_t x, ssize_t y, bool clear_empty_sq
     // clear area
     if (clear_empty_squares) {
         ssize_t w = 0, h = 0;
-        for (auto const& [pos, _]: shadow.components) {
+        for (auto const& [pos, _]: shadow.components_) {
             w = std::max(w, pos.x);
             h = std::max(h, pos.y);
         }
         for (ssize_t tx = x; tx < (x + w); ++tx)
             for (ssize_t ty = y; ty < (y + h); ++ty)
-                components.erase({ tx, ty });
+                components_.erase({ tx, ty });
     }
 
     // paste components
-    for (auto const& [pos, component]: shadow.components) {
+    for (auto const& [pos, component]: shadow.components_) {
         auto [tx, ty] = pos;
         if ((tx + x) >= 0 && (tx + x) < w_ && (ty + y) >= 0 && (ty + y) < h_) {
-            components[{ (tx + x), (ty + y) }] = component;
+            components_[{ (tx + x), (ty + y) }] = component;
         }
     }
 }

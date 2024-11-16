@@ -101,24 +101,24 @@ template <>
 struct std::hash<std::pair<WireConfiguration, bool>> {
     std::size_t operator()(std::pair<WireConfiguration, bool> const& pair) const noexcept {
         auto const [wc, value] = pair;
-        return ((((uint8_t) wc.dir) << 16) | (((uint8_t) wc.side) << 8) | (uint8_t) wc.width) << value;
+        return std::hash<WireConfiguration>()(wc) << value;
     }
 };
 
-BoardSpriteSheet::Sprite BoardSpriteSheet::wire_sprite(WireConfiguration const& wire, bool value)
+BoardSpriteSheet::Sprite BoardSpriteSheet::wire_sprite(WireConfiguration const& wire)
 {
-    static const std::unordered_map<std::pair<WireConfiguration, bool>, Sprite> configs {
-        { { { WireWidth::W1, WireSide::Top, Direction::N }, true }, Sprite::WireTopOnNorth_1 },
-        { { { WireWidth::W1, WireSide::Top, Direction::S }, true }, Sprite::WireTopOnSouth_1 },
-        { { { WireWidth::W1, WireSide::Top, Direction::W }, true }, Sprite::WireTopOnWest_1 },
-        { { { WireWidth::W1, WireSide::Top, Direction::E }, true }, Sprite::WireTopOnEast_1 },
-        { { { WireWidth::W1, WireSide::Top, Direction::N }, false }, Sprite::WireTopOffNorth_1 },
-        { { { WireWidth::W1, WireSide::Top, Direction::S }, false }, Sprite::WireTopOffSouth_1 },
-        { { { WireWidth::W1, WireSide::Top, Direction::W }, false }, Sprite::WireTopOffWest_1 },
-        { { { WireWidth::W1, WireSide::Top, Direction::E }, false }, Sprite::WireTopOffEast_1 },
+    static const std::unordered_map<WireConfiguration, Sprite> configs {
+        { { WireWidth::W1, WireSide::Top, Direction::N, true }, Sprite::WireTopOnNorth_1 },
+        { { WireWidth::W1, WireSide::Top, Direction::S, true }, Sprite::WireTopOnSouth_1 },
+        { { WireWidth::W1, WireSide::Top, Direction::W, true }, Sprite::WireTopOnWest_1 },
+        { { WireWidth::W1, WireSide::Top, Direction::E, true }, Sprite::WireTopOnEast_1 },
+        { { WireWidth::W1, WireSide::Top, Direction::N, false }, Sprite::WireTopOffNorth_1 },
+        { { WireWidth::W1, WireSide::Top, Direction::S, false }, Sprite::WireTopOffSouth_1 },
+        { { WireWidth::W1, WireSide::Top, Direction::W, false }, Sprite::WireTopOffWest_1 },
+        { { WireWidth::W1, WireSide::Top, Direction::E, false }, Sprite::WireTopOffEast_1 },
     };
 
-    auto it = configs.find({ wire, value });
+    auto it = configs.find(wire);
     if (it == configs.end())
         throw std::runtime_error("Wire configuration not found");
     return it->second;

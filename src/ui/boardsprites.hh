@@ -29,7 +29,7 @@ public:
     [[nodiscard]] static Coordinate const&   coordinate(Sprite sprite);
     [[nodiscard]] static BoardSprite const&  board_sprites();
     [[nodiscard]] static std::vector<Sprite> component_sprites(Component const& component);
-    [[nodiscard]] static Sprite              wire_sprite(WireConfiguration const& wire, bool value);
+    [[nodiscard]] static Sprite              wire_sprite(WireConfiguration const& wire);
 
 private:
     SDL_Texture* texture_ = nullptr;
