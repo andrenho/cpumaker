@@ -28,7 +28,7 @@ void Board::paste(Board const& shadow, ssize_t x, ssize_t y, bool clear_empty_sq
     }
 }
 
-std::vector<SubPosition> Board::wire_from_a_to_b(Position const& start, Position const& end)
+std::vector<SubPosition> Board::route_wire(Position const& start, Position const& end)
 {
     std::vector<SubPosition> sp;
 
@@ -64,6 +64,5 @@ std::vector<SubPosition> Board::wire_from_a_to_b(Position const& start, Position
         sp.push_back({ .pos = end, .dir = Direction::S });
     }
 
-    // TODO
     return sp;
 }

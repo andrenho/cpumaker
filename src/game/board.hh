@@ -20,7 +20,7 @@ public:
 
     void paste(Board const& shadow, ssize_t x, ssize_t y, bool clear_empty_squares);
 
-    static std::vector<SubPosition> wire_from_a_to_b(Position const& start, Position const& end);
+    static std::vector<SubPosition> route_wire(Position const& start, Position const& end);
 
 private:
     ssize_t w_, h_;
