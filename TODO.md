@@ -9,6 +9,10 @@ Board creation
     - [x] Temporary wires
     - [x] Add wires
     - [x] Wire drawing side
+- [ ] Independent components
+  - Separate class for wire management
+  - Actions: placement (size, can rotate?, texture, keypress to place), configuration, draw, interact, simulate
+  - Draw: automatic shadow
 - [ ] Interact with button
 - [ ] Delete items from board
 - [ ] Remove wires
