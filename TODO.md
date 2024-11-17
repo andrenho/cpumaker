@@ -12,7 +12,8 @@ Board creation
     - [ ] Lower wires
 - [ ] Interact with button
 - [ ] Delete items from board
-- [ ] Add/remove wires
+- [ ] Remove wires
+- [ ] Rotate components
 - [ ] Wire connection
 
 Simulation

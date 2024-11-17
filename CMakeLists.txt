@@ -34,6 +34,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         set(warnings ${warnings} -Wsuggest-attribute=pure -Wsuggest-attribute=const -Wsuggest-attribute=noreturn -Wsuggest-attribute=malloc -Wsuggest-attribute=returns_nonnull -Wsuggest-attribute=format -Wsuggest-attribute=cold)
     endif()
+    add_compile_options(-ggdb -O0)
 endif()
 
 # try to use ccache, if available

@@ -24,7 +24,7 @@ public:
     [[nodiscard]] std::unordered_map<Position, Component> const&                             components() const { return components_; }
     [[nodiscard]] std::unordered_map<Position, std::unordered_set<WireConfiguration>> const& wires() const { return wires_; }
 
-    static std::vector<SubPosition> route_wire(Position const& start, Position const& end);
+    static std::vector<SubPosition> route_wire(Position const& start, Position const& end, Orientation orientation);
 
 private:
     ssize_t w_, h_;

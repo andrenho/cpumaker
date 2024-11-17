@@ -65,7 +65,7 @@ void BoardUI::event(SDL_Window* window, SDL_Event* e)
                 switch (e->key.keysym.sym) {
                     case SDLK_w:
                         if (drawing_wire_) {
-                            auto vsp = Board::route_wire(drawing_wire_->start_pos, tile->pos);
+                            auto vsp = Board::route_wire(drawing_wire_->start_pos, tile->pos, Orientation::Vertical);
                             for (auto const& sp: vsp) {
                                 board_->add_wire(sp.pos, {
                                     .width = drawing_wire_->width,
@@ -167,7 +167,7 @@ void BoardUI::draw_tile(SDL_Renderer* ren, ssize_t x, ssize_t y) const
 
 void BoardUI::draw_temporary_wire(SDL_Renderer* ren, TempWire const& temp_wire, Position const& end) const
 {
-    for (SubPosition const& sp: Board::route_wire(temp_wire.start_pos, end)) {
+    for (SubPosition const& sp: Board::route_wire(temp_wire.start_pos, end, Orientation::Vertical)) {
         WireConfiguration wire { .width = temp_wire.width, .side = temp_wire.side, .dir = sp.dir, .value = false };
         draw_icon(ren, BoardSpriteSheet::wire_sprite(wire), sp.pos.x, sp.pos.y, true);
     }

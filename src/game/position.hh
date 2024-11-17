@@ -1,8 +1,15 @@
 #ifndef POSITION_HH
 #define POSITION_HH
 
+enum class Direction : uint8_t { N, S, W, E };
+
+enum class Orientation: uint8_t { Horizontal, Vertical };
+
+//---------------------------------------
+
 struct Position {
     ssize_t x, y;
+
     bool operator==(Position const& other) const { return x == other.x && y == other.y; }
 };
 
@@ -15,8 +22,6 @@ struct std::hash<Position> {
 };
 
 //---------------------------------------
-
-enum class Direction : uint8_t { N, S, W, E };
 
 struct SubPosition {
     Position  pos;
