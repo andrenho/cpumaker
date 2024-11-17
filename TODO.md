@@ -9,7 +9,7 @@ Board creation
     - [x] Temporary wires
     - [x] Add wires
     - [ ] Wire drawing side
-    - [ ] Lower wires
+    - [ ] Move drawing wire to its own class
 - [ ] Interact with button
 - [ ] Delete items from board
 - [ ] Remove wires
@@ -23,6 +23,7 @@ Simulation
 # Phase 2 - circuits QOL
 
 Board creation
+- [ ] Wires in the lower side + upper/lower connector
 - [ ] Resize board
 - [ ] Select components
 - [ ] Cut/Copy/paste chucks

@@ -17,13 +17,13 @@ void BoardUI::event(SDL_Window* window, SDL_Event* e)
         case SDL_MOUSEBUTTONDOWN:
         case SDL_MOUSEBUTTONUP:
             if (e->button.button == SDL_BUTTON_RIGHT) {
-                moving_ = (e->button.state == SDL_PRESSED);
-                SDL_ShowCursor(moving_ ? SDL_DISABLE : SDL_ENABLE);
+                dragging_board_ = (e->button.state == SDL_PRESSED);
+                SDL_ShowCursor(dragging_board_ ? SDL_DISABLE : SDL_ENABLE);
             }
             break;
 
         case SDL_MOUSEMOTION:
-            if (moving_) {
+            if (dragging_board_) {
                 int scr_w, scr_h;
                 SDL_GetWindowSize(window, &scr_w, &scr_h);
                 rel_x_ += (e->motion.xrel / zoom_);
@@ -31,6 +31,8 @@ void BoardUI::event(SDL_Window* window, SDL_Event* e)
                 rel_x_ = std::max(std::min(rel_x_, (int) (scr_w / zoom_ - 20)), (int) -(board_->w() * TILE_SIZE) + 20);
                 rel_y_ = std::max(std::min(rel_y_, (int) (scr_h / zoom_ - 20)), (int) -(board_->h() * TILE_SIZE) + 20);
             }
+            if (drawing_wire_)
+                process_move_while_drawing_wire();
             break;
 
         case SDL_KEYDOWN: {
@@ -64,8 +66,8 @@ void BoardUI::event(SDL_Window* window, SDL_Event* e)
             if (tile) {
                 switch (e->key.keysym.sym) {
                     case SDLK_w:
-                        if (drawing_wire_) {
-                            auto vsp = Board::route_wire(drawing_wire_->start_pos, tile->pos, Orientation::Vertical);
+                        if (drawing_wire_ && drawing_wire_->orientation) {
+                            auto vsp = Board::route_wire(drawing_wire_->start_pos, tile->pos, *drawing_wire_->orientation);
                             for (auto const& sp: vsp) {
                                 board_->add_wire(sp.pos, {
                                     .width = drawing_wire_->width,
@@ -167,9 +169,33 @@ void BoardUI::draw_tile(SDL_Renderer* ren, ssize_t x, ssize_t y) const
 
 void BoardUI::draw_temporary_wire(SDL_Renderer* ren, TempWire const& temp_wire, Position const& end) const
 {
-    for (SubPosition const& sp: Board::route_wire(temp_wire.start_pos, end, Orientation::Vertical)) {
-        WireConfiguration wire { .width = temp_wire.width, .side = temp_wire.side, .dir = sp.dir, .value = false };
-        draw_icon(ren, BoardSpriteSheet::wire_sprite(wire), sp.pos.x, sp.pos.y, true);
+    if (drawing_wire_->orientation) {
+        for (SubPosition const& sp: Board::route_wire(temp_wire.start_pos, end, *drawing_wire_->orientation)) {
+            WireConfiguration wire { .width = temp_wire.width, .side = temp_wire.side, .dir = sp.dir, .value = false };
+            draw_icon(ren, BoardSpriteSheet::wire_sprite(wire), sp.pos.x, sp.pos.y, true);
+        }
+    }
+}
+
+void BoardUI::process_move_while_drawing_wire()
+{
+    if (!drawing_wire_->orientation) {
+
+        auto o_end_pos = mouse_tile();
+        if (!o_end_pos)
+            return;
+        Position end_pos = o_end_pos->pos;
+
+        if (drawing_wire_->start_pos == end_pos) {
+            // if user returns to starting place, we reset the orientation
+            drawing_wire_->orientation.reset();
+            printf("Orientation is reset.\n");
+        } else {
+            ssize_t dx = std::abs(drawing_wire_->start_pos.x - end_pos.x);
+            ssize_t dy = std::abs(drawing_wire_->start_pos.y - end_pos.y);
+            drawing_wire_->orientation = (dx >= dy) ? Orientation::Horizontal : Orientation::Vertical;
+            printf("Orientation is now %s (%ld %ld).\n", *drawing_wire_->orientation == Orientation::Horizontal ? "Horizontal" : "Vertical", dx, dy);
+        }
     }
 }
 

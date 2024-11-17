@@ -30,16 +30,19 @@ private:
     [[nodiscard]] std::optional<SubPosition> mouse_tile() const;
 
     float zoom_ = 2.f;
-    bool  moving_ = false;
+    bool  dragging_board_ = false;
+
+    // draw wire
 
     struct TempWire {
-        Position  start_pos;
-        WireWidth width;
-        WireSide  side;
+        Position                   start_pos;
+        WireWidth                  width;
+        WireSide                   side;
+        std::optional<Orientation> orientation {};
     };
     std::optional<TempWire> drawing_wire_;
-
     void draw_temporary_wire(SDL_Renderer* ren, TempWire const& temp_wire, Position const& end) const;
+    void process_move_while_drawing_wire();
 };
 
 #endif //BOARDUI_HH
