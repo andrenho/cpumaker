@@ -8,8 +8,7 @@ Board creation
   - [ ] Add wires
     - [x] Temporary wires
     - [x] Add wires
-    - [ ] Wire drawing side
-    - [ ] Move drawing wire to its own class
+    - [x] Wire drawing side
 - [ ] Interact with button
 - [ ] Delete items from board
 - [ ] Remove wires

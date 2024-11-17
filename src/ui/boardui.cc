@@ -32,7 +32,7 @@ void BoardUI::event(SDL_Window* window, SDL_Event* e)
                 rel_y_ = std::max(std::min(rel_y_, (int) (scr_h / zoom_ - 20)), (int) -(board_->h() * TILE_SIZE) + 20);
             }
             if (drawing_wire_)
-                process_move_while_drawing_wire();
+                determine_direction_while_drawing_wire();
             break;
 
         case SDL_KEYDOWN: {
@@ -86,6 +86,26 @@ void BoardUI::event(SDL_Window* window, SDL_Event* e)
         default: break;
     }
 }
+
+
+void BoardUI::determine_direction_while_drawing_wire()
+{
+    auto o_end_pos = mouse_tile();
+    if (!o_end_pos)
+        return;
+    Position end_pos = o_end_pos->pos;
+
+    if (drawing_wire_->start_pos == end_pos) {  // if user returns to starting place, we reset the orientation
+        drawing_wire_->orientation.reset();
+    }
+
+    if (!drawing_wire_->orientation && drawing_wire_->start_pos != end_pos) {
+        ssize_t dx = std::abs(drawing_wire_->start_pos.x - end_pos.x);
+        ssize_t dy = std::abs(drawing_wire_->start_pos.y - end_pos.y);
+        drawing_wire_->orientation = (dx >= dy) ? Orientation::Horizontal : Orientation::Vertical;
+    }
+}
+
 
 std::optional<SubPosition> BoardUI::mouse_tile() const
 {
@@ -174,24 +194,6 @@ void BoardUI::draw_temporary_wire(SDL_Renderer* ren, TempWire const& temp_wire, 
             WireConfiguration wire { .width = temp_wire.width, .side = temp_wire.side, .dir = sp.dir, .value = false };
             draw_icon(ren, BoardSpriteSheet::wire_sprite(wire), sp.pos.x, sp.pos.y, true);
         }
-    }
-}
-
-void BoardUI::process_move_while_drawing_wire()
-{
-    auto o_end_pos = mouse_tile();
-    if (!o_end_pos)
-        return;
-    Position end_pos = o_end_pos->pos;
-
-    if (drawing_wire_->start_pos == end_pos) {  // if user returns to starting place, we reset the orientation
-        drawing_wire_->orientation.reset();
-    }
-
-    if (!drawing_wire_->orientation && drawing_wire_->start_pos != end_pos) {
-        ssize_t dx = std::abs(drawing_wire_->start_pos.x - end_pos.x);
-        ssize_t dy = std::abs(drawing_wire_->start_pos.y - end_pos.y);
-        drawing_wire_->orientation = (dx >= dy) ? Orientation::Horizontal : Orientation::Vertical;
     }
 }
 

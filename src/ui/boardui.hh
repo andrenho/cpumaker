@@ -32,7 +32,7 @@ private:
     float zoom_ = 2.f;
     bool  dragging_board_ = false;
 
-    // draw wire
+    // draw temporary wire
 
     struct TempWire {
         Position                   start_pos;
@@ -42,7 +42,7 @@ private:
     };
     std::optional<TempWire> drawing_wire_;
     void draw_temporary_wire(SDL_Renderer* ren, TempWire const& temp_wire, Position const& end) const;
-    void process_move_while_drawing_wire();
+    void determine_direction_while_drawing_wire();
 };
 
 #endif //BOARDUI_HH
